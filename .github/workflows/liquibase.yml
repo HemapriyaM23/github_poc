@@ -1,0 +1,19 @@
+name: Liquibase Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  liquibase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Liquibase
+        uses: docker://your-docker-registry/liquibase-action
+        with:
+          args: update
