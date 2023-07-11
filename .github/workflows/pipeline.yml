@@ -36,7 +36,7 @@ jobs:
           git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
 
       - name: Deploy to PostgreSQL
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'pgdb/') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'postgres/') }}
         run: |
           echo "Deploying to PostgreSQL environment: $ENVIRONMENT"
           # Add your PostgreSQL deployment logic here
