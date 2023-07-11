@@ -32,14 +32,14 @@ jobs:
       - name: Check folder changes
         id: folder_changes
         run: |
-          if git diff-tree --name-only --no-commit-id HEAD^ HEAD | grep -q "postgres/"; then
+          if git diff-tree --name-only --no-commit-id ${{ github.event.before }} ${{ github.sha }} | grep -q "postgres/"; then
             echo "Folder changes detected"
-            echo "::set-output name=folder_changed::true"
+            echo "folder_changed=true" >> $GITHUB_ENV
           else
             echo "No folder changes"
-            echo "::set-output name=folder_changed::false"
+            echo "folder_changed=false" >> $GITHUB_ENV
           fi
-      
+
       - name: Deploy stage
         if: steps.folder_changes.outputs.folder_changed == 'true'
         run: |
