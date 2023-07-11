@@ -36,7 +36,7 @@ jobs:
           echo "${{ github.event.head_commit.modified }}"
 
       - name: Deploy to PostgreSQL
-        if: github.event.head_commit.modified | contains('postgres/')
+        if: contains(github.event.head_commit.modified, 'postgres/')
         run: |
           echo "Deploying to PostgreSQL environment: $ENVIRONMENT"
           # Add your PostgreSQL deployment logic here
