@@ -29,14 +29,19 @@ jobs:
             exit 1
           fi
 
-      - name: Debug
+      - name: Check folder changes
+        id: folder_changes
         run: |
-          echo "ENVIRONMENT: $ENVIRONMENT"
-          echo "Modified Files:"
-          echo "${{ github.event.head_commit.modified }}"
-
-      - name: Deploy to PostgreSQL
-        if: contains(github.event.head_commit.modified, 'postgres/')
+          if git diff-tree --name-only --no-commit-id HEAD^ HEAD | grep -q "postgres/"; then
+            echo "Folder changes detected"
+            echo "::set-output name=folder_changed::true"
+          else
+            echo "No folder changes"
+            echo "::set-output name=folder_changed::false"
+          fi
+      
+      - name: Deploy stage
+        if: steps.folder_changes.outputs.folder_changed == 'true'
         run: |
           echo "Deploying to PostgreSQL environment: $ENVIRONMENT"
           # Add your PostgreSQL deployment logic here
