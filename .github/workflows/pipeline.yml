@@ -37,26 +37,36 @@ jobs:
             exit 1
           fi
 
+      - name: Debug
+        run: |
+          echo "ENVIRONMENT: ${{ env.ENVIRONMENT }}"
+          echo "Modified Files:"
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+
       - name: Deploy to PostgreSQL
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && startsWith(github.event.head_commit.modified, 'pgdb/') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'postgres/') }}
         run: |
           echo "Deploying to PostgreSQL environment: ${{ env.ENVIRONMENT }}"
- 
+          # Add your PostgreSQL deployment logic here
+          # You can use the environment variables: ${{ env.pgdb_credid }}, ${{ env.pgdb_url }}
 
       - name: Deploy to Unix
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'unix/') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' }}
         run: |
           echo "Deploying to Unix environment: ${{ env.ENVIRONMENT }}"
-
+          # Add your Unix deployment logic here
+          # You can use the environment variables: ${{ env.unix_server }}
 
       - name: Deploy to Snowflake Database - COMETL_CONTROL
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'snowflake/COMETL_CONTROL/') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' }}
         run: |
           echo "Deploying to Snowflake COMETL_CONTROL environment: ${{ env.ENVIRONMENT }}"
-
+          # Add your Snowflake COMETL_CONTROL deployment logic here
+          # You can use the environment variables: ${{ env.snowflake_COMETL_CONTROL__db_url }}, ${{ env.snowflake_credid_COMETL_CONTROL }}
 
       - name: Deploy to Snowflake Database - COMETL_PA
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'snowflake/COMETL_PA/') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' }}
         run: |
           echo "Deploying to Snowflake COMETL_PA environment: ${{ env.ENVIRONMENT }}"
-
+          # Add your Snowflake COMETL_PA deployment logic here
+          # You can use the environment variables: ${{ env.snowflake_COMETL_PA__db_url }}, ${{ env.snowflake_credid_COMETL_PA }}
