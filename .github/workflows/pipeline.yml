@@ -38,7 +38,7 @@ jobs:
           fi
 
       - name: Deploy to PostgreSQL
-        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'postgres/test') }}
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && startsWith(github.event.head_commit.modified, 'pgdb/') }}
         run: |
           echo "Deploying to PostgreSQL environment: ${{ env.ENVIRONMENT }}"
  
