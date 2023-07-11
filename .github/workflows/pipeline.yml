@@ -38,7 +38,6 @@ jobs:
           else
             echo "No folder changes"
             echo "folder_changed=false" >> $GITHUB_ENV
-          fi
 
       - name: Deploy stage
         if: steps.folder_changes.outputs.folder_changed == 'true'
