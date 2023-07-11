@@ -1,0 +1,62 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - test
+      - sit
+      - uat
+
+#env:
+#  pgdb_credid: ${{ secrets.BRANCH_NAME_pgdb_credid_ui }}
+#  pgdb_url: ${{ secrets.BRANCH_NAME_pfzalgn_pgdb_url }}
+#  unix_server: ${{ secrets.BRANCH_NAME_pfzalgn_unix_server }}
+#  snowflake_COMETL_CONTROL__db_url: ${{ secrets.BRANCH_NAME_pfzalgn_snowflake_COMETL_CONTROL_db_url_grw }}
+#  snowflake_COMETL_PA__db_url: ${{ secrets.BRANCH_NAME_pfzalgn_snowflake_COMETL_PA_db_url_grw }}
+#  snowflake_credid_COMETL_CONTROL: ${{ secrets.BRANCH_NAME_pfzalgn_COMETL_CONTROL_snowflake_credid_grw }}
+#  snowflake_credid_COMETL_PA: ${{ secrets.BRANCH_NAME_pfzalgn_COMETL_PA_snowflake_credid_grw }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+            echo "export ENVIRONMENT=test" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/sit" ]]; then
+            echo "export ENVIRONMENT=sit" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/uat" ]]; then
+            echo "export ENVIRONMENT=uat" >> $GITHUB_ENV
+          else
+            echo "Invalid branch."
+            exit 1
+          fi
+
+      - name: Deploy to PostgreSQL
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'pgdb/') }}
+        run: |
+          echo "Deploying to PostgreSQL environment: ${{ env.ENVIRONMENT }}"
+ 
+
+      - name: Deploy to Unix
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'unix/') }}
+        run: |
+          echo "Deploying to Unix environment: ${{ env.ENVIRONMENT }}"
+
+
+      - name: Deploy to Snowflake Database - COMETL_CONTROL
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'snowflake/COMETL_CONTROL/') }}
+        run: |
+          echo "Deploying to Snowflake COMETL_CONTROL environment: ${{ env.ENVIRONMENT }}"
+
+
+      - name: Deploy to Snowflake Database - COMETL_PA
+        if: ${{ env.ENVIRONMENT == 'test' || env.ENVIRONMENT == 'sit' || env.ENVIRONMENT == 'uat' && contains(github.event.head_commit.modified, 'snowflake/COMETL_PA/') }}
+        run: |
+          echo "Deploying to Snowflake COMETL_PA environment: ${{ env.ENVIRONMENT }}"
+
