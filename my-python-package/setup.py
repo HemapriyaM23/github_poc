@@ -1,23 +1,23 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="mypackage",                # The name of your package
-    version="0.1",                   # Package version
-    description="A simple Python package",
+    name="github_poc",
+    version="0.1",
+    description="A description of your Python package",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    author="Your Name",              # Your name or organization
+    author="Your Name",
     author_email="your.email@example.com",
-    url="https://github.com/yourusername/my-python-package",  # GitHub URL
-    packages=find_packages(),        # Automatically discover all packages
-    install_requires=[               # List of dependencies
-        'numpy',
-        'requests'
+    url="https://github.com/HemapriyaM23/github_poc",
+    packages=find_packages(where='my-python-package'),  # Make sure to look inside 'my-python-package'
+    package_dir={'': 'my-python-package'},  # Set package directory
+    install_requires=[
+        'numpy',  # Example dependency
     ],
-    classifiers=[                    # Metadata classifiers
+    classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.6',          # Minimum Python version required
+    python_requires='>=3.6',
 )
