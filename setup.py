@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="my_python_package",
+    name="package",
     version="0.1",
     description="A description of your Python package",
     long_description=open('README.md').read(),
@@ -9,8 +9,8 @@ setup(
     author="Your Name",
     author_email="your.email@example.com",
     url="https://github.com/HemapriyaM23/github_poc",
-    packages=find_packages(where='my_python_package'),  # Make sure to look inside 'my-python-package'
-    package_dir={'': 'my_python_package'},  # Set package directory
+    packages=find_packages(where='package'),  # Make sure to look inside 'my-python-package'
+    package_dir={'': 'package'},  # Set package directory
     install_requires=[
         'numpy',  # Example dependency
     ],
