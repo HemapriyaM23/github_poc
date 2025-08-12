@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="github_poc",
+    name="my_python_package",
     version="0.1",
     description="A description of your Python package",
     long_description=open('README.md').read(),
