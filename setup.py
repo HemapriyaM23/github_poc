@@ -9,8 +9,8 @@ setup(
     author="Your Name",
     author_email="your.email@example.com",
     url="https://github.com/HemapriyaM23/github_poc",
-    packages=find_packages(where='my-python-package'),  # Make sure to look inside 'my-python-package'
-    package_dir={'': 'my-python-package'},  # Set package directory
+    packages=find_packages(where='my_python_package'),  # Make sure to look inside 'my-python-package'
+    package_dir={'': 'my_python_package'},  # Set package directory
     install_requires=[
         'numpy',  # Example dependency
     ],
