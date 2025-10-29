@@ -1,3 +1,13 @@
+cursor.execute("DELETE * FROM users")
+
+name = "Alice"
+greeting = "Hello, " + name  # Should use f"Hello, {name}"
+
+MAX_USERS = 100  # Should be parameterized, not hardcoded
+timeout = 30     # Should be parameterized, not hardcoded
+
+import requests
+import urllib.request
 #Version = 1.0
 #Updated Date = 7-JULY-2025
 #Created by = Soumik
