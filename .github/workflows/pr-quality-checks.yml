@@ -1,0 +1,29 @@
+name: PR Quality Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check for DELETE * in SQL
+        run: |
+          if grep -r -E 'DELETE \*' new/ package/; then
+            echo "Error: Usage of DELETE * found. Please use explicit columns and WHERE clauses." && exit 1
+          fi
+      - name: Check for formatted strings (Python f-strings)
+        run: |
+          if grep -r -E '"[^"]*\{[^"]*\}"|\'[^"]*\{[^"]*\}\'' new/ package/ | grep -v 'f"' | grep -v "f'"; then
+            echo "Error: All dynamic strings must use f-strings." && exit 1
+          fi
+      - name: Check for hardcoded constants
+        run: |
+          if grep -r -E '= [0-9]+|= ".*"|= \\'.*\\'' new/ package/ | grep -v '^[A-Z_]* ='; then
+            echo "Error: Constants must be parameterized and not hardcoded." && exit 1
+          fi
+      - name: Require Copilot review
+        run: |
+          echo "Copilot review is required. Please ensure Copilot has reviewed this PR."
